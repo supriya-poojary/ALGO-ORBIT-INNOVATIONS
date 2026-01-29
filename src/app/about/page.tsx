@@ -1,5 +1,117 @@
-import React from 'react';
+"use client";
+
+import React, { useState } from 'react';
 import styles from './about.module.css';
+
+// ... (rest of imports)
+
+// Helper component for Team Member
+const TeamMember = ({ member, index }: { member: any, index: number }) => {
+    const [imgLoaded, setImgLoaded] = useState(false);
+
+    return (
+        <div style={{ textAlign: 'center', position: 'relative' }}>
+            {/* Holographic Pedestal Effect */}
+            <div style={{
+                position: 'absolute',
+                bottom: '60px',
+                left: '50%',
+                transform: 'translateX(-50%)',
+                width: '80px',
+                height: '20px',
+                background: 'radial-gradient(ellipse at center, rgba(0,112,243,0.3) 0%, rgba(0,0,0,0) 70%)',
+                borderRadius: '50%',
+                filter: 'blur(5px)'
+            }}></div>
+
+            <div style={{
+                width: '120px',
+                height: '120px',
+                borderRadius: '50%',
+                background: '#fff',
+                margin: '0 auto 20px',
+                boxShadow: '0 10px 30px rgba(0,0,0,0.1)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                border: '3px solid #fff',
+                outline: '2px solid rgba(121,40,202,0.3)',
+                position: 'relative',
+                zIndex: 2,
+                overflow: 'hidden',
+                animation: 'float 6s ease-in-out infinite',
+                animationDelay: `${index * 0.5}s`
+            }}>
+                {/* Always render Avatar as base/fallback */}
+                <div style={{ position: 'absolute', inset: 0, display: imgLoaded ? 'none' : 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <IconAbstractAvatar delay={index} />
+                </div>
+
+                {/* Image overlays if loaded */}
+                <img
+                    src={member.img}
+                    alt="" /* Empty alt to prevent text from showing while loading/failing */
+                    style={{
+                        width: '100%',
+                        height: '100%',
+                        objectFit: 'cover',
+                        opacity: imgLoaded ? 1 : 0,
+                        transition: 'opacity 0.5s ease',
+                        position: 'relative',
+                        zIndex: 1
+                    }}
+                    onLoad={() => setImgLoaded(true)}
+                /* onError is not needed for fallback logic now, as we just stay hidden if error */
+                />
+            </div>
+            <h4 style={{ marginBottom: '4px', fontSize: '18px', fontWeight: '700' }}>{member.name}</h4>
+            <p style={{ fontSize: '14px', color: '#7928CA', fontWeight: '600', letterSpacing: '0.5px' }}>{member.role}</p>
+        </div>
+    );
+};
+
+// FAQ Accordion Item Component
+const FAQItem = ({ item }: { item: { question: string, answer: string } }) => {
+    const [isOpen, setIsOpen] = useState(false);
+
+    return (
+        <div style={{ background: '#fff', borderRadius: '16px', border: '1px solid #eee', overflow: 'hidden', boxShadow: isOpen ? '0 8px 30px rgba(0,0,0,0.05)' : 'none', transition: 'all 0.3s ease' }}>
+            <button
+                onClick={() => setIsOpen(!isOpen)}
+                style={{
+                    width: '100%',
+                    padding: '24px 32px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    background: 'none',
+                    border: 'none',
+                    cursor: 'pointer',
+                    outline: 'none',
+                    textAlign: 'left'
+                }}
+            >
+                <h3 style={{ fontSize: '18px', fontWeight: '700', color: '#111', margin: 0 }}>{item.question}</h3>
+                <span style={{
+                    fontSize: '24px',
+                    fontWeight: '300',
+                    color: '#0070F3',
+                    transform: isOpen ? 'rotate(45deg)' : 'rotate(0deg)',
+                    transition: 'transform 0.3s ease'
+                }}>+</span>
+            </button>
+            <div style={{
+                height: isOpen ? 'auto' : '0',
+                overflow: 'hidden',
+                transition: 'height 0.3s ease'
+            }}>
+                <div style={{ padding: '0 32px 32px', color: '#555', lineHeight: '1.7' }}>
+                    {item.answer}
+                </div>
+            </div>
+        </div>
+    );
+};
 
 // --- Professional Abstract Tech Icons ---
 // Abstract representations of concepts using geometric forms, gradients, and subtle transparency.
@@ -146,6 +258,50 @@ const IconAbstractAvatar = ({ delay = 0 }: { delay?: number }) => (
     </svg>
 );
 
+const IconAbstractMission = () => (
+    <svg width="60" height="60" viewBox="0 0 100 100" fill="none">
+        <defs>
+            <linearGradient id="gradMission" x1="10" y1="10" x2="90" y2="90" gradientUnits="userSpaceOnUse">
+                <stop stopColor="#FF0080" />
+                <stop offset="1" stopColor="#7928CA" />
+            </linearGradient>
+            <filter id="glowMission" x="-20%" y="-20%" width="140%" height="140%">
+                <feGaussianBlur stdDeviation="3" result="blur" />
+                <feComposite in="SourceGraphic" in2="blur" operator="over" />
+            </filter>
+        </defs>
+        {/* Rocket/Launch Abstract Shape */}
+        <path d="M50 10C50 10 30 50 30 70C30 85 40 90 50 90C60 90 70 85 70 70C70 50 50 10 50 10Z" fill="url(#gradMission)" fillOpacity="0.2" stroke="url(#gradMission)" strokeWidth="2" style={{ animation: 'float 4s ease-in-out infinite' }} />
+        <circle cx="50" cy="70" r="8" fill="white" filter="url(#glowMission)" style={{ animation: 'pulse-glow 2s infinite' }} />
+        <path d="M30 70L20 90M70 70L80 90" stroke="url(#gradMission)" strokeWidth="2" strokeLinecap="round" opacity="0.6" />
+        <circle cx="50" cy="10" r="1" fill="white">
+            <animate attributeName="opacity" values="0;1;0" dur="2s" repeatCount="indefinite" />
+        </circle>
+    </svg>
+);
+
+const IconAbstractVision = () => (
+    <svg width="60" height="60" viewBox="0 0 100 100" fill="none">
+        <defs>
+            <radialGradient id="gradVision" cx="0.5" cy="0.5" r="0.5">
+                <stop offset="0%" stopColor="#fff" />
+                <stop offset="60%" stopColor="#0070F3" stopOpacity="0.5" />
+                <stop offset="100%" stopColor="#0070F3" stopOpacity="0" />
+            </radialGradient>
+        </defs>
+        {/* Eye/Horizon Abstract */}
+        <path d="M10 50Q50 10 90 50Q50 90 10 50Z" stroke="#0070F3" strokeWidth="2" fill="none" opacity="0.8" style={{ animation: 'pulse-glow 6s infinite' }} />
+        <circle cx="50" cy="50" r="15" fill="url(#gradVision)" style={{ animation: 'scale-up 4s infinite alternate' }} />
+        <circle cx="50" cy="50" r="6" fill="#111" stroke="white" strokeWidth="2" />
+
+        {/* Rays of sight */}
+        <line x1="50" y1="50" x2="80" y2="20" stroke="#0070F3" strokeWidth="1" strokeDasharray="4 4" opacity="0.5" style={{ animation: 'spin-slow 20s linear infinite' }} />
+        <line x1="50" y1="50" x2="20" y2="80" stroke="#0070F3" strokeWidth="1" strokeDasharray="4 4" opacity="0.5" style={{ animation: 'spin-slow 20s linear infinite' }} />
+        <line x1="50" y1="50" x2="80" y2="80" stroke="#0070F3" strokeWidth="1" strokeDasharray="4 4" opacity="0.5" style={{ animation: 'spin-slow 20s linear infinite reverse' }} />
+        <line x1="50" y1="50" x2="20" y2="20" stroke="#0070F3" strokeWidth="1" strokeDasharray="4 4" opacity="0.5" style={{ animation: 'spin-slow 20s linear infinite reverse' }} />
+    </svg>
+);
+
 export default function AboutPage() {
     return (
         <div>
@@ -180,44 +336,81 @@ export default function AboutPage() {
                             <div className={styles.glassCardMain}>
                                 <div className={styles.floatingIcon}>
                                     <div style={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                                        {/* Animated Orbital Rings around Logo */}
-                                        <svg width="200" height="200" viewBox="0 0 200 200" style={{ position: 'absolute', animation: 'spin-slow 20s linear infinite' }}>
-                                            <circle cx="100" cy="100" r="80" stroke="url(#gradRing)" strokeWidth="1" fill="none" strokeDasharray="10 10" opacity="0.5" />
-                                            <circle cx="100" cy="100" r="60" stroke="#7928CA" strokeWidth="1" fill="none" opacity="0.2" />
+                                        {/* Animated Orbital Rings around Logo - Enhanced */}
+                                        <svg width="240" height="240" viewBox="0 0 240 240" style={{ position: 'absolute', animation: 'spin-slow 20s linear infinite' }}>
                                             <defs>
-                                                <linearGradient id="gradRing" x1="0" y1="0" x2="200" y2="200">
+                                                <linearGradient id="gradRingMain" x1="0" y1="0" x2="100%" y2="0%">
                                                     <stop stopColor="#7928CA" />
                                                     <stop offset="1" stopColor="#FF0080" />
                                                 </linearGradient>
                                             </defs>
+                                            <circle cx="120" cy="120" r="90" stroke="url(#gradRingMain)" strokeWidth="1.5" fill="none" strokeDasharray="20 10" opacity="0.6" />
+                                            <circle cx="120" cy="120" r="70" stroke="#7928CA" strokeWidth="0.5" fill="none" opacity="0.3" />
+                                            <circle cx="120" cy="120" r="110" stroke="#0070F3" strokeWidth="0.5" fill="none" strokeDasharray="4 4" opacity="0.2" />
                                         </svg>
-                                        <img src="/logo.png" alt="Logo" width={100} style={{ filter: 'drop-shadow(0 10px 20px rgba(0,0,0,0.15))', zIndex: 10 }} />
+                                        <img src="/logo.png" alt="Logo" width={110} style={{ filter: 'drop-shadow(0 0 30px rgba(121,40,202,0.3))', zIndex: 10, position: 'relative' }} />
                                     </div>
                                 </div>
                             </div>
 
-                            {/* Satellite Card 1 - AI Spark */}
+                            {/* Satellite Card 1 - The "Spark" (Innovation) - Top Right */}
                             <div className={`${styles.glassCardSmall} ${styles.small1}`}>
-                                <svg width="60" height="60" viewBox="0 0 60 60" fill="none">
-                                    <path d="M30 10L35 25L50 30L35 35L30 50L25 35L10 30L25 25L30 10Z" fill="url(#gradSpark)" filter="url(#glowSpark)" />
+                                <svg width="90" height="90" viewBox="0 0 100 100" fill="none">
                                     <defs>
-                                        <linearGradient id="gradSpark" x1="10" y1="10" x2="50" y2="50">
-                                            <stop stopColor="#FFD700" />
-                                            <stop offset="1" stopColor="#FF0080" />
-                                        </linearGradient>
-                                        <filter id="glowSpark">
-                                            <feGaussianBlur stdDeviation="2" result="blur" />
-                                            <feComposite in="SourceGraphic" in2="blur" operator="over" />
+                                        <radialGradient id="gradNeural" cx="50" cy="50" r="50" gradientUnits="userSpaceOnUse">
+                                            <stop stopColor="#0070F3" />
+                                            <stop offset="1" stopColor="#7928CA" stopOpacity="0" />
+                                        </radialGradient>
+                                        <filter id="glowNeural" x="-50%" y="-50%" width="200%" height="200%">
+                                            <feGaussianBlur stdDeviation="3" />
+                                            <feComposite in="SourceGraphic" operator="over" />
                                         </filter>
                                     </defs>
+                                    
+                                    {/* Central Core - Pulsing */}
+                                    <circle cx="50" cy="50" r="15" fill="url(#gradNeural)" style={{ animation: 'pulse-glow 3s infinite' }} />
+                                    <circle cx="50" cy="50" r="8" fill="#fff" style={{ filter: 'blur(2px)' }} />
+
+                                    {/* Orbiting Probability Cloud - Rotating */}
+                                    <g style={{ transformOrigin: '50px 50px', animation: 'spin-slow 12s linear infinite' }}>
+                                        <ellipse cx="50" cy="50" rx="35" ry="10" stroke="#0070F3" strokeWidth="1" strokeOpacity="0.5" transform="rotate(45 50 50)" />
+                                        <ellipse cx="50" cy="50" rx="35" ry="10" stroke="#7928CA" strokeWidth="1" strokeOpacity="0.5" transform="rotate(-45 50 50)" />
+                                        
+                                        {/* Satellite Nodes */}
+                                        <circle cx="75" cy="25" r="3" fill="#00C9FF" style={{ filter: 'drop-shadow(0 0 5px #00C9FF)' }} />
+                                        <circle cx="25" cy="75" r="3" fill="#FF0080" style={{ filter: 'drop-shadow(0 0 5px #FF0080)' }} />
+                                    </g>
+                                    
+                                    {/* Connecting Data Lines */}
+                                    <line x1="50" y1="50" x2="80" y2="20" stroke="url(#gradNeural)" strokeWidth="1" strokeOpacity="0.3" strokeDasharray="2 2" />
+                                    <line x1="50" y1="50" x2="20" y2="80" stroke="url(#gradNeural)" strokeWidth="1" strokeOpacity="0.3" strokeDasharray="2 2" />
                                 </svg>
                             </div>
 
-                            {/* Satellite Card 2 - Data Cube */}
+                            {/* Satellite Card 2 - The "Structure" (Architecture) - Bottom Left */}
                             <div className={`${styles.glassCardSmall} ${styles.small2}`}>
-                                <svg width="50" height="50" viewBox="0 0 50 50" fill="none">
-                                    <path d="M25 5L45 15V35L25 45L5 35V15L25 5Z" stroke="#0070F3" strokeWidth="2" fill="rgba(0,112,243,0.05)" />
-                                    <path d="M25 5V25M25 45V25M45 15L25 25L5 15" stroke="#0070F3" strokeWidth="1" />
+                                <svg width="90" height="90" viewBox="0 0 100 100" fill="none">
+                                    <defs>
+                                        <linearGradient id="gradStack" x1="0" y1="0" x2="100" y2="100">
+                                            <stop stopColor="rgba(255,255,255,0.8)" />
+                                            <stop offset="1" stopColor="rgba(255,255,255,0.1)" />
+                                        </linearGradient>
+                                    </defs>
+                                    
+                                    {/* Levitating Stack Effect */}
+                                    <g style={{ transformOrigin: '50px 50px', animation: 'float 5s ease-in-out infinite' }}>
+                                        {/* Bottom Layer - Dark Base */}
+                                        <path d="M20 65L50 80L80 65L50 50L20 65Z" fill="#0070F3" fillOpacity="0.2" stroke="#0070F3" strokeWidth="1" />
+                                        
+                                        {/* Middle Layer - Data Plane */}
+                                        <path d="M20 50L50 65L80 50L50 35L20 50Z" fill="url(#gradStack)" stroke="#fff" strokeWidth="0.5" style={{ animation: 'float 5s ease-in-out infinite', animationDelay: '0.2s', transform: 'translateY(-5px)' }} />
+                                        
+                                        {/* Top Layer - Glass Interface */}
+                                        <path d="M20 35L50 50L80 35L50 20L20 35Z" fill="white" fillOpacity="0.4" stroke="#fff" strokeWidth="1.5" style={{ animation: 'float 5s ease-in-out infinite', animationDelay: '0.4s', transform: 'translateY(-10px)' }} />
+                                        
+                                        {/* Vertical Data Flow Lines */}
+                                        <line x1="50" y1="20" x2="50" y2="10" stroke="#00C9FF" strokeWidth="2" strokeLinecap="round" style={{ animation: 'pulse-glow 2s infinite' }} />
+                                    </g>
                                 </svg>
                             </div>
                         </div>
@@ -236,9 +429,55 @@ export default function AboutPage() {
 
             {/* Vision & Mission */}
             <section style={{ padding: '100px 0', background: '#F7F9FA' }}>
-                <div className="container">
-                    <h2 style={{ fontSize: '32px', marginBottom: '16px' }}>Our Mission</h2>
-                    <div className={styles.gridThree}>
+                <div className="container" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))', gap: '60px' }}>
+
+                    {/* Mission Column */}
+                    <div>
+                        <div style={{ display: 'flex', alignItems: 'center', marginBottom: '24px', gap: '16px' }}>
+                            <div style={{ width: '60px', height: '60px', background: 'var(--primary-gradient)', borderRadius: '16px', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 10px 20px rgba(121,40,202,0.2)' }}>
+                                <IconAbstractMission />
+                            </div>
+                            <h2 style={{ fontSize: '32px', fontWeight: '800' }}>Our Mission</h2>
+                        </div>
+                        <p style={{ fontSize: '18px', color: '#555', lineHeight: '1.8', marginBottom: '32px' }}>
+                            To dismantle the barriers to technology adoption by providing accessible, high-caliber education and enterprise-grade consultancy. We exist to empower individuals and organizations to not just survive, but thrive in the age of AI.
+                        </p>
+                        <ul style={{ listStyle: 'none', padding: 0 }}>
+                            <li style={{ marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '12px', fontSize: '16px', fontWeight: '500' }}>
+                                <span style={{ color: '#0070F3' }}>✓</span> Democratize AI Education
+                            </li>
+                            <li style={{ marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '12px', fontSize: '16px', fontWeight: '500' }}>
+                                <span style={{ color: '#0070F3' }}>✓</span> Accelerate Digital Transformation
+                            </li>
+                            <li style={{ marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '12px', fontSize: '16px', fontWeight: '500' }}>
+                                <span style={{ color: '#0070F3' }}>✓</span> Bridge the Industry-Academia Gap
+                            </li>
+                        </ul>
+                    </div>
+
+                    {/* Vision Column */}
+                    <div>
+                        <div style={{ display: 'flex', alignItems: 'center', marginBottom: '24px', gap: '16px' }}>
+                            <div style={{ width: '60px', height: '60px', background: '#fff', borderRadius: '16px', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1px solid #eee', boxShadow: '0 10px 20px rgba(0,0,0,0.05)' }}>
+                                <IconAbstractVision />
+                            </div>
+                            <h2 style={{ fontSize: '32px', fontWeight: '800' }}>Our Vision</h2>
+                        </div>
+                        <p style={{ fontSize: '18px', color: '#555', lineHeight: '1.8', marginBottom: '32px' }}>
+                            To be the global gravitational center for innovation, where human creativity and artificial intelligence orbit in perfect harmony. We envision a world where technology is an extension of human will, not a replacement for it.
+                        </p>
+                        <div className={styles.premiumCard} style={{ padding: '24px', borderLeft: '4px solid #7928CA' }}>
+                            <p style={{ fontStyle: 'italic', fontWeight: '600', color: '#333' }}>
+                                "Creating a sustainable ecosystem of infinite learning and boundless innovation."
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Values Grid (moved down slightly) */}
+                <div className="container" style={{ marginTop: '80px' }}>
+                    <h2 style={{ fontSize: '24px', textAlign: 'center', marginBottom: '40px', color: '#888', textTransform: 'uppercase', letterSpacing: '2px' }}>Driven By Values</h2>
+                    <div className={styles.gridThree} style={{ marginTop: '0' }}>
                         <div className={styles.premiumCard}>
                             <div className={styles.cardIconBox} style={{ background: 'transparent' }}><IconAbstractEducation /></div>
                             <h3 className={styles.cardTitle}>Transform Education</h3>
@@ -270,7 +509,9 @@ export default function AboutPage() {
                     <div className={`${styles.premiumCard}`} style={{ flex: '1', minWidth: '300px' }}>
                         <div className={styles.cardIconBox} style={{ background: 'transparent' }}><IconAbstractMastery /></div>
                         <h3 className={styles.cardTitle}>Career & Mastery</h3>
-                        <p className={styles.cardText}>Comprehensive training programs designed to master modern tech stacks. From zero to deployed.</p>
+                        <p className={styles.cardText}>
+                            Cultivating elite engineering talent through rigorous, industry-aligned mastery programs. We bridge the gap between potential and performance, producing highly trained professionals ready to architect scalable enterprise solutions from day one.
+                        </p>
                     </div>
                 </div>
             </section>
@@ -278,25 +519,32 @@ export default function AboutPage() {
             {/* Journey Timeline */}
             <section className={styles.timelineSection}>
                 <div className="container">
-                    <h2 style={{ textAlign: 'center', fontSize: '36px' }}>Our Journey</h2>
+                    <h2 style={{ textAlign: 'center', fontSize: '36px', marginBottom: '80px' }}>Our Journey</h2>
                     <div className={styles.timelineTrack}>
                         <div className={styles.timelineNode}>
                             <div className={styles.year}>2023</div>
                             <div className={styles.dot}></div>
-                            <h3 className={styles.nodeTitle}>Inception</h3>
-                            <p className={styles.cardText} style={{ fontSize: '14px', maxWidth: '200px', margin: '0 auto' }}>Algo Orbit Innovations was founded to bridge the AI gap.</p>
+                            <h3 className={styles.nodeTitle}>Genesis</h3>
+                            <p className={styles.cardText} style={{ fontSize: '15px', maxWidth: '240px', margin: '0 0 0 0' }}>
+                                Algo Orbit was born from a singular question: <br />
+                                <i>"How can we democratize AI mastery?"</i>
+                            </p>
                         </div>
                         <div className={styles.timelineNode}>
                             <div className={styles.year}>2024</div>
                             <div className={styles.dot}></div>
-                            <h3 className={styles.nodeTitle}>First Prototype</h3>
-                            <p className={styles.cardText} style={{ fontSize: '14px', maxWidth: '200px', margin: '0 auto' }}>Launched our first AI-driven education solution.</p>
+                            <h3 className={styles.nodeTitle}>The Catalyst</h3>
+                            <p className={styles.cardText} style={{ fontSize: '15px', maxWidth: '240px', margin: '0 auto' }}>
+                                Launched our first cohort, proving that rapid, high-intensity skill acquisition is possible.
+                            </p>
                         </div>
                         <div className={styles.timelineNode}>
                             <div className={styles.year}>2025</div>
                             <div className={styles.dot}></div>
-                            <h3 className={styles.nodeTitle}>Global Reach</h3>
-                            <p className={styles.cardText} style={{ fontSize: '14px', maxWidth: '200px', margin: '0 auto' }}>Expansion into IT Consultancy & Enterprise markets.</p>
+                            <h3 className={styles.nodeTitle}>Orbiting New Heights</h3>
+                            <p className={styles.cardText} style={{ fontSize: '15px', maxWidth: '240px', margin: '0 0 0 auto' }}>
+                                Scaling into enterprise consultancy, becoming the bridge between talent and technology.
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -328,43 +576,40 @@ export default function AboutPage() {
                     <h2 style={{ textAlign: 'center', fontSize: '36px', marginBottom: '16px', background: 'var(--primary-gradient)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', display: 'inline-block', width: '100%' }}>Meet the Visionaries</h2>
                     <p style={{ textAlign: 'center', color: '#666', marginBottom: '60px', fontSize: '18px' }}>The innovators attempting to orbit the impossible.</p>
                     <div style={{ display: 'flex', justifyContent: 'center', gap: '60px', flexWrap: 'wrap' }}>
-                        {[0, 1, 2, 3].map((val, index) => (
-                            <div key={index} style={{ textAlign: 'center', position: 'relative' }}>
-                                {/* Holographic Pedestal Effect */}
-                                <div style={{
-                                    position: 'absolute',
-                                    bottom: '60px',
-                                    left: '50%',
-                                    transform: 'translateX(-50%)',
-                                    width: '80px',
-                                    height: '20px',
-                                    background: 'radial-gradient(ellipse at center, rgba(0,112,243,0.3) 0%, rgba(0,0,0,0) 70%)',
-                                    borderRadius: '50%',
-                                    filter: 'blur(5px)'
-                                }}></div>
+                        {[
+                            { name: "Nishan Kamath", role: "MANAGING DIRECTOR & CEO", img: "/nishan.jpg" },
+                            { name: "Sujatha Kamath", role: "DIRECTOR & ACCOUNTS HEAD", img: "/sujatha.jpg" },
+                            { name: "Prajna Rao", role: "HEAD OF TECHNOLOGY & TRAINING", img: "/prajna.jpg" },
+                            { name: "Piyush Prakash", role: "PRODUCT ENGINEER", img: "/piyush.jpg" },
+                            { name: "Harshini", role: "SOFTWARE DEVELOPER", img: "/harshini.jpg" },
+                            { name: "Sharanya Aithal KS", role: "SOFTWARE DEVELOPER", img: "/sharanya.jpg" }
+                        ].map((member, index) => (
+                            <TeamMember key={index} member={member} index={index} />
+                        ))}
+                    </div>
+                </div>
+            </section>
 
-                                <div style={{
-                                    width: '120px',
-                                    height: '120px',
-                                    borderRadius: '50%',
-                                    background: 'rgba(255,255,255,0.8)',
-                                    backdropFilter: 'blur(10px)',
-                                    margin: '0 auto 20px',
-                                    boxShadow: '0 10px 30px rgba(0,0,0,0.05)',
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                    border: '1px solid rgba(255,255,255,1)',
-                                    position: 'relative',
-                                    zIndex: 2,
-                                    animation: 'float 6s ease-in-out infinite',
-                                    animationDelay: `${index * 0.5}s`
-                                }}>
-                                    <IconAbstractAvatar delay={index} />
-                                </div>
-                                <h4 style={{ marginBottom: '4px', fontSize: '18px', fontWeight: '700' }}>Expert {index + 1}</h4>
-                                <p style={{ fontSize: '14px', color: '#7928CA', fontWeight: '600', letterSpacing: '0.5px' }}>SPECIALIST</p>
-                            </div>
+            {/* FAQ Section */}
+            <section style={{ padding: '100px 0', background: '#F7F9FA' }}>
+                <div className="container" style={{ maxWidth: '800px' }}>
+                    <h2 style={{ textAlign: 'center', fontSize: '36px', marginBottom: '60px' }}>Frequently Asked Questions</h2>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+                        {[
+                            {
+                                question: "What makes Algo Orbit different from others?",
+                                answer: "Unlike traditional training centers that focus on syntax, we engineer careers. Our collaborative, project-based curriculum is reverse-engineered from actual industry demands, ensuring you master the high-impact AI, Cloud, and Full Stack technologies that modern enterprises desperately need."
+                            },
+                            {
+                                question: "Do students get certificates?",
+                                answer: "Absolutely. Upon successful completion of our rigorous programs, students receive industry-recognized certifications. These aren't just papers; they are validations of practical mastery and project execution capabilities that you can showcase on LinkedIn and resumes."
+                            },
+                            {
+                                question: "How do colleges benefit from MoU?",
+                                answer: "Partnering through an MoU (Memorandum of Understanding) empowers institutions with instant access to our cutting-edge curriculum, faculty development programs, and a direct pipeline for student internships and placements. It effectively bridges the gap between static academic theory and dynamic industry application."
+                            }
+                        ].map((item, index) => (
+                            <FAQItem key={index} item={item} />
                         ))}
                     </div>
                 </div>
