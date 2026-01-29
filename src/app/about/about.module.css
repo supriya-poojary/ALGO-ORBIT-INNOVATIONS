@@ -1,0 +1,343 @@
+/* Aurora / Orb Backgrounds */
+.auroraContainer {
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    z-index: 0;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.6;
+    animation: moveOrb 20s infinite alternate ease-in-out;
+}
+
+.orb1 {
+    top: 20%;
+    left: 20%;
+    width: 300px;
+    height: 300px;
+    background: #FF0080;
+    animation-duration: 25s;
+}
+
+.orb2 {
+    top: 40%;
+    right: 20%;
+    width: 400px;
+    height: 400px;
+    background: #7928CA;
+    animation-duration: 30s;
+    animation-delay: -5s;
+}
+
+.orb3 {
+    bottom: 20%;
+    left: 40%;
+    width: 250px;
+    height: 250px;
+    background: #0070F3;
+    /* Blue */
+    animation-duration: 22s;
+    animation-delay: -10s;
+}
+
+@keyframes moveOrb {
+    0% {
+        transform: translate(0, 0) scale(1);
+    }
+
+    33% {
+        transform: translate(30px, -50px) scale(1.1);
+    }
+
+    66% {
+        transform: translate(-20px, 20px) scale(0.9);
+    }
+
+    100% {
+        transform: translate(0, 0) scale(1);
+    }
+}
+
+/* Hero Section */
+.heroSection {
+    position: relative;
+    padding: 120px 0 80px;
+    overflow: hidden;
+    background: #fff;
+}
+
+.heroContent {
+    position: relative;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    gap: 60px;
+}
+
+.heroText {
+    flex: 1;
+}
+
+.heroTitle {
+    font-size: 64px;
+    font-weight: 800;
+    line-height: 1.1;
+    margin-bottom: 24px;
+    letter-spacing: -2px;
+    color: #000;
+}
+
+.heroSubtitle {
+    font-size: 20px;
+    color: var(--text-secondary);
+    margin-bottom: 40px;
+    max-width: 540px;
+    font-weight: 400;
+}
+
+/* 3D Visual Composition */
+.visualComposition {
+    flex: 1;
+    height: 400px;
+    position: relative;
+    perspective: 1000px;
+}
+
+.glassCardMain {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotateY(-10deg) rotateX(5deg);
+    width: 320px;
+    height: 400px;
+    background: rgba(255, 255, 255, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(20px);
+    border-radius: 30px;
+    box-shadow:
+        0 20px 40px rgba(0, 0, 0, 0.1),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.5);
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: float 6s ease-in-out infinite;
+}
+
+.floatingIcon {
+    font-size: 80px;
+    /* Or image size */
+}
+
+.glassCardSmall {
+    position: absolute;
+    width: 140px;
+    height: 140px;
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(24px);
+    border-radius: 20px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    z-index: 3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    animation: float 8s ease-in-out infinite reverse;
+}
+
+.small1 {
+    top: 20px;
+    right: 0px;
+    animation-delay: 1s;
+}
+
+.small2 {
+    bottom: 40px;
+    left: 0px;
+    animation-delay: 2s;
+}
+
+/* Sections */
+.missionSection {
+    padding: 100px 0;
+    text-align: center;
+    position: relative;
+    background: #fafafa;
+}
+
+.quote {
+    font-size: 40px;
+    font-weight: 800;
+    background: linear-gradient(to right, #000 0%, #000 50%, #666 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: -1px;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+/* Grid & Cards */
+.gridThree {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 40px;
+    margin-top: 60px;
+}
+
+.premiumCard {
+    background: #fff;
+    border-radius: 24px;
+    padding: 40px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.premiumCard:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+    border-color: rgba(0, 0, 0, 0.1);
+}
+
+.cardIconBox {
+    width: 64px;
+    height: 64px;
+    background: var(--background-base);
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+    margin-bottom: 24px;
+}
+
+.cardTitle {
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 12px;
+}
+
+.cardText {
+    color: var(--text-secondary);
+    line-height: 1.6;
+}
+
+/* Timeline */
+.timelineSection {
+    padding: 100px 0;
+    background: #fff;
+    text-align: center;
+}
+
+.timelineTrack {
+    position: relative;
+    margin-top: 80px;
+    height: 4px;
+    background: #f0f0f0;
+    border-radius: 2px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.timelineNode {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+}
+
+.dot {
+    width: 24px;
+    height: 24px;
+    background: #fff;
+    border: 6px solid var(--primary-color);
+    border-radius: 50%;
+    margin: 0 auto 24px;
+    box-shadow: 0 0 0 8px rgba(121, 40, 202, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.timelineNode:hover .dot {
+    transform: scale(1.2);
+}
+
+.year {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--primary-color);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+}
+
+.nodeTitle {
+    font-size: 18px;
+    font-weight: 700;
+}
+
+/* Bento Grid */
+.bentoGrid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.bentoItem {
+    background: #000;
+    color: #fff;
+    padding: 48px;
+    border-radius: 32px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .heroContent {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .timelineTrack {
+        flex-direction: column;
+        height: auto;
+        background: transparent;
+        align-items: flex-start;
+        border-left: 4px solid #f0f0f0;
+        margin-left: 20px;
+        padding-left: 40px;
+        gap: 40px;
+    }
+
+    .timelineNode {
+        text-align: left;
+    }
+
+    .dot {
+        position: absolute;
+        left: -54px;
+    }
+
+    .bentoGrid {
+        grid-template-columns: 1fr;
+    }
+}
