@@ -3,20 +3,29 @@
 :root {
   --font-inter: 'Inter', sans-serif;
 
-  /* Premium Vibrant Palette */
-  --primary-color: #7928CA;
-  /* Deep Purple */
-  --primary-gradient: linear-gradient(135deg, #7928CA 0%, #FF0080 100%);
-  /* Pink/Purple */
-  --secondary-color: #111;
-  --text-main: #000;
-  --text-secondary: #666;
-  --background-base: #fff;
+  /* Clean Light Theme (Home Page Match) */
+  --primary-color: #0056D2;
+  /* Strong Blue */
+  --primary-gradient: linear-gradient(135deg, #0056D2 0%, #00C9FF 100%);
+  --secondary-color: #000000;
 
-  /* Glass Accents */
-  --glass-border: rgba(255, 255, 255, 0.4);
-  --glass-bg: rgba(255, 255, 255, 0.6);
-  --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
+  --text-main: #111111;
+  /* Sharp Black for Headings */
+  --text-secondary: #555555;
+  /* Dark Grey for Body */
+
+  --background-base: #FFFFFF;
+  /* Pure White */
+  --background-paper: #F8F9FA;
+  /* Very subtle grey for contrast sections */
+
+  /* Cards & UI */
+  --glass-border: rgba(0, 0, 0, 0.08);
+  --glass-bg: rgba(255, 255, 255, 0.9);
+  --glass-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+  /* Soft shadow */
+  --hover-shadow: 0 20px 60px rgba(0, 86, 210, 0.15);
+  /* Blue glow on hover */
 
   --header-height: 72px;
   --container-width: 1200px;
@@ -32,8 +41,13 @@ body {
   font-family: var(--font-inter);
   color: var(--text-main);
   background: var(--background-base);
+
+  /* Clean Background (No Dark Pattern) */
+  background-image: none;
+
   line-height: 1.6;
   overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
 }
 
 a {
@@ -48,42 +62,66 @@ a {
 }
 
 /* Premium Buttons */
+/* Premium Buttons */
 .btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 0 24px;
-  height: 52px;
-  font-weight: 600;
-  border-radius: 12px;
+  padding: 0 28px;
+  height: 56px;
+  font-weight: 700;
+  border-radius: 6px;
+  /* Sharper corners for tech look */
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-  letter-spacing: -0.01em;
-  font-size: 16px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  font-size: 14px;
 }
 
 .btn-primary {
-  background: var(--secondary-color);
+  background: var(--primary-gradient);
   color: #fff;
   border: none;
-  box-shadow: 0 4px 14px 0 rgba(0, 0, 0, 0.39);
+  box-shadow: 0 10px 20px rgba(0, 118, 243, 0.3);
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.btn-primary::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #0056D2 0%, #00C9FF 100%);
+  /* Reverse gradient on hover */
+  opacity: 0;
+  z-index: -1;
+  transition: opacity 0.3s ease;
+}
+
+.btn-primary:hover::before {
+  opacity: 1;
 }
 
 .btn-primary:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.23);
-  background: #000;
+  transform: translateY(-3px);
+  box-shadow: 0 15px 30px rgba(0, 118, 243, 0.5);
+  /* Stronger glow */
 }
 
 .btn-outline {
   background: transparent;
-  color: var(--text-main);
-  border: 1px solid #eaeaea;
+  color: var(--primary-color);
+  border: 2px solid var(--primary-color);
 }
 
 .btn-outline:hover {
-  border-color: #000;
-  background: rgba(0, 0, 0, 0.02);
+  background: var(--primary-color);
+  color: #fff;
 }
 
 /* Animations */
@@ -148,4 +186,16 @@ a {
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+/* Interaction Effects */
+.hover-scale {
+  transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  will-change: transform;
+  cursor: pointer;
+}
+
+.hover-scale:hover {
+  transform: scale(1.08) rotate(1deg);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
 }
